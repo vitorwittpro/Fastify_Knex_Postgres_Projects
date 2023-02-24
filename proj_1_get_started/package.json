@@ -1,0 +1,25 @@
+{
+  "name": "proj_1_get_started",
+  "version": "1.0.0",
+  "description": "Implementing a Fastify server with Postgre connection",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js"
+  },
+  "keywords": [
+    "fastify",
+    "postgre"
+  ],
+  "author": "Vitor Hugo Witt",
+  "license": "ISC",
+  "dependencies": {
+    "@fastify/postgres": "^5.2.0",
+    "fastify": "^4.13.0",
+    "pg": "^8.9.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "type": "module"
+}
