@@ -12,6 +12,18 @@ export default async (app) => {
         password: "docker",
     })
 
+    const knex = require('knex')({
+        client: 'postgres',
+        connection: {
+            host: '127.0.0.1',
+            port: 5432,
+            user: 'postgres',
+            database: 'postgres',
+            password: '1234'
+        }
+
+    })
+
     client.connect()
 
     app.route({
