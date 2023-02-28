@@ -4,8 +4,8 @@
   "description": "Implementing a Fastify server with Postgre connection",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "server": "nodemon server.js"
+    "start": "node app.js",
+    "server": "nodemon app.js"
   },
   "keywords": [
     "fastify",
@@ -14,6 +14,7 @@
   "author": "Vitor Hugo Witt",
   "license": "ISC",
   "dependencies": {
+    "@fastify/autoload": "^5.7.1",
     "@fastify/postgres": "^5.2.0",
     "fastify": "^4.13.0",
     "pg": "^8.9.0"
