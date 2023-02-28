@@ -24,6 +24,8 @@ export default async (app) => {
 
     })
 
+    knex.connect();
+
     client.connect()
 
     app.route({
