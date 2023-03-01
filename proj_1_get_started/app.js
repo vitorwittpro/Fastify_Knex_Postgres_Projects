@@ -11,8 +11,11 @@ const app = fastify({
 })
 
 app.register(autoload, {
-    dir: path.join(__dirname, 'src/routes'), options: { prefix: '/api' },
-    routeParams: true
+    dir: path.join(__dirname, 'src/plugins')
+})
+
+app.register(autoload, {
+    dir: path.join(__dirname, 'src/routes'), options: { prefix: '/api' }
 })
 
 app.listen({ port: 3000 })
