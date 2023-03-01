@@ -1,32 +1,33 @@
-import pkg from "pg"
+// import pkg from "pg"
+
+import knex from "knex"
 
 export default async (app) => {
 
-    const { Client } = pkg
+    // const { Client } = pkg
 
-    const client = new Client({
-        host: "localhost",
-        port: 5432,
-        user: "postgres",
-        database: "postgres",
-        password: "docker",
-    })
+    // const client = new Client({
+    //     host: "localhost",
+    //     port: 5432,
+    //     user: "postgres",
+    //     database: "postgres",
+    //     password: "docker",
+    // })
 
-    const knex = require('knex')({
+    // client.connect()
+
+    const client = knex({
         client: 'postgres',
         connection: {
             host: '127.0.0.1',
             port: 5432,
             user: 'postgres',
             database: 'postgres',
-            password: '1234'
+            password: 'docker'
         }
 
     })
 
-    knex.connect();
-
-    client.connect()
 
     app.route({
         method: 'GET', url: '/', schema: {
@@ -45,8 +46,8 @@ export default async (app) => {
                 },
             },
         }, handler: async (req, reply) => {
-            const usersData = await client.query("SELECT * FROM tab_user")
-            reply.send(usersData.rows)
+            const usersData = await client.select().table('tab_user')
+            reply.send(usersData)
         }
     })
 
@@ -74,11 +75,10 @@ export default async (app) => {
         }, handler: async (req, reply) => {
             const { id } = req.params
 
-            const userData = await client.query(
-                `SELECT u.id, u.name, u.email, u.password FROM tab_user u WHERE id = ${id}`
-            )
+            const userData = await client('tab_user').where('id', id)
 
-            reply.send(userData.rows[0])
+            console.log(userData)
+            reply.send(userData)
         }
     })
 
@@ -101,13 +101,7 @@ export default async (app) => {
         handler: async (req, reply) => {
             const { name, email, password } = req.body
 
-            const rows = await client.query('SELECT * FROM tab_user;')
-
-            const id = rows.rowCount + 1
-
-            console.log(`${id}, NOW(), ${name}, ${email}, ${password});`)
-
-            await client.query(`INSERT INTO tab_user VALUES (${id}, NOW(), '${name}', '${email}', '${password}');`)
+            await client.insert(req.body).into('tab_user')
 
             reply.send('New user added!')
 
@@ -136,9 +130,12 @@ export default async (app) => {
         },
         handler: async (req, reply) => {
             const { id } = req.params;
-            const { name, email, password } = req.body;
+            // const { name, email, password } = req.body;
 
-            await client.query(`UPDATE tab_user SET name='${name}', email='${email}', password='${password}' WHERE id = ${id};`)
+            await client
+                .where({ id: id })
+                .update(req.body)
+                .into('tab_user')
 
             reply.send('User updated!')
         }
@@ -158,7 +155,9 @@ export default async (app) => {
         handler: async (req, reply) => {
             const { id } = req.params
 
-            await client.query(`DELETE FROM tab_user WHERE id = ${id}`)
+            await client('tab_user')
+                .where({ id: id })
+                .del()
 
             reply.send('User deleted!')
         }
