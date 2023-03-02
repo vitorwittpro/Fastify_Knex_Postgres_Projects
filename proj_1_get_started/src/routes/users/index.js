@@ -1,20 +1,6 @@
-// import pkg from "pg"
-
 import knex from "knex"
 
 export default async (app) => {
-
-    // const { Client } = pkg
-
-    // const client = new Client({
-    //     host: "localhost",
-    //     port: 5432,
-    //     user: "postgres",
-    //     database: "postgres",
-    //     password: "docker",
-    // })
-
-    // client.connect()
 
     const client = knex({
         client: 'postgres',
@@ -28,9 +14,10 @@ export default async (app) => {
 
     })
 
-
     app.route({
-        method: 'GET', url: '/', schema: {
+        method: 'GET',
+        url: '/',
+        schema: {
             response: {
                 200: {
                     type: "array",
@@ -99,8 +86,6 @@ export default async (app) => {
             }
         },
         handler: async (req, reply) => {
-            const { name, email, password } = req.body
-
             await client.insert(req.body).into('tab_user')
 
             reply.send('New user added!')
